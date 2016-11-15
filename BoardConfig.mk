@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 
+# Boldly go.
+USE_CLANG_PLATFORM_BUILD := true
+
 BOARD_VENDOR := htc
 
 DEVICE_PATH := device/htc/pme
@@ -59,6 +62,12 @@ TARGET_KERNEL_SOURCE := kernel/htc/msm8996
 TARGET_KERNEL_CONFIG := cyanogenmod_pme_defconfig
 TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
 TARGET_USES_UNCOMPRESSED_KERNEL := false
+
+# QCOM hardware
+BOARD_USES_QCOM_HARDWARE := true
+
+# ANT+
+BOARD_ANT_WIRELESS_DEVICE := "qualcomm-uart"
 
 # Audio
 BOARD_USES_ALSA_AUDIO := true
@@ -110,7 +119,7 @@ AUDIO_FEATURE_ENABLED_DS2_DOLBY_DAP := true
 AUDIO_FEATURE_ENABLED_SOURCE_TRACKING := true
 AUDIO_FEATURE_ENABLED_AUDIOSPHERE := true
 
-# Bluetooth
+# Bluetooth possible add to bt.
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(DEVICE_PATH)/bluetooth
@@ -119,16 +128,18 @@ BOARD_BLUEDROID_VENDOR_CONF := $(DEVICE_PATH)/bluetooth/libbt_vndcfg.txt
 # Camera
 TARGET_SPECIFIC_CAMERA_PARAMETER_LIBRARY := libcamera_parameters_ext
 USE_DEVICE_SPECIFIC_CAMERA := true
-COMMON_GLOBAL_CFLAGS += -DPROPERTY_PERMS_APPEND='{"htc.camera.sensor.", AID_CAMERA, 0}, {"camera.4k2k.", AID_MEDIA, 0},'
+#COMMON_GLOBAL_CFLAGS += -DPROPERTY_PERMS_APPEND='{"htc.camera.sensor.", AID_CAMERA, 0}, {"camera.4k2k.", AID_MEDIA, 0},'
 
 # CMHW
 BOARD_USES_CYANOGEN_HARDWARE := true
 BOARD_HARDWARE_CLASS += \
     $(DEVICE_PATH)/cmhw \
     hardware/cyanogen/cmhw
+TARGET_TAP_TO_WAKE_NODE := "/proc/touchpanel/double_tap_enable"
 
-# CNE
+# CNE see what it does
 TARGET_LDPRELOAD := libNimsWrap.so
+BOARD_USES_QCNE := true
 
 # Display
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
@@ -144,8 +155,22 @@ MAX_EGL_CACHE_SIZE := 2048*1024
 HAVE_ADRENO_SOURCE:= false
 OVERRIDE_RS_DRIVER:= libRSDriver_adreno.so
 
+# Enable dexpreopt to speed boot time
+ifeq ($(HOST_OS),linux)
+  ifeq ($(call match-word-in-list,$(TARGET_BUILD_VARIANT),user),true)
+    ifeq ($(WITH_DEXPREOPT),)
+      WITH_DEXPREOPT := true
+    endif
+  endif
+endif
+
 # Encryption
 TARGET_HW_DISK_ENCRYPTION := true
+
+# GPS test................
+TARGET_NO_RPC := true
+USE_DEVICE_SPECIFIC_GPS := true
+
 
 # Filesystem
 BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
