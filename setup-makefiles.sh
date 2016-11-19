@@ -21,7 +21,7 @@ set -e
 DEVICE=pme
 VENDOR=htc
 
-# Load extractutils and do some sanity checks
+# Load extract_utils and do some sanity checks
 MY_DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$MY_DIR" ]]; then MY_DIR="$PWD"; fi
 
@@ -34,10 +34,10 @@ if [ ! -f "$HELPER" ]; then
 fi
 . "$HELPER"
 
-# Initialize the helper
-setup_vendor "$DEVICE" "$VENDOR" "$CM_ROOT"
+# Initialize the helper for common device
+setup_vendor "$DEVICE_COMMON" "$VENDOR" "$CM_ROOT" true
 
-# Copyright headers and guards
+# Copyright headers and common guards
 write_headers
 
 # The standard blobs
@@ -68,14 +68,37 @@ EOF
 write_makefiles "$MY_DIR"/proprietary-files-qc-perf.txt
 
 echo "endif" >> "$PRODUCTMK"
-
-cat << EOF >> "$ANDROIDMK"
-
-endif
-
-EOF
+echo "endif" >> "$ANDROIDMK"
 
 printf '\n%s\n' "\$(call inherit-product, vendor/qcom/binaries/msm8996/graphics/graphics-vendor.mk)" >> "$PRODUCTMK"
 
-# We are done!
+# We are done with common
+write_footers
+
+# Reinitialize the helper for device
+setup_vendor "$DEVICE" "$VENDOR" "$CM_ROOT"
+
+# Copyright headers and guards
+write_headers
+
+write_makefiles "$MY_DIR"/../$DEVICE/proprietary-files.txt
+
+# Qualcomm BSP blobs - we put a conditional around here
+# in case the BSP is actually being built
+printf '\n%s\n' "ifeq (\$(QCPATH),)" >> "$PRODUCTMK"
+printf '\n%s\n' "ifeq (\$(QCPATH),)" >> "$ANDROIDMK"
+
+write_makefiles "$MY_DIR"/../$DEVICE/proprietary-files-qc.txt
+
+# Qualcomm performance blobs - conditional as well
+# in order to support Cyanogen OS builds
+cat << EOF >> "$PRODUCTMK"
+endif
+EOF
+
+cat << EOF >> "$ANDROIDMK"
+endif
+EOF
+
+# We are done with device
 write_footers
