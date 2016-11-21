@@ -3,3 +3,4 @@ allow fingerprintd input_device:chr_file rw_file_perms;
 allow fingerprintd sysfs_fingerprint:dir search;
 allow fingerprintd sysfs_fingerprint:file rw_file_perms;
 allow fingerprintd tee_device:chr_file rw_file_perms;
+allow fingerprintd uhid_device:chr_file rw_file_perms;
