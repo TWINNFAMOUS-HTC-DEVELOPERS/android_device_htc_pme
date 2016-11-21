@@ -18,6 +18,12 @@
 # Use Snapdragon LLVM, if available
 TARGET_USE_SDCLANG := true
 
+# Add sdclang path
+TARGET_SDCLANG_PATH := prebuilts/clang/linux-x86/host/sdclang-3.8/bin
+
+# add APP_CFLGS for snapdragon llvm toolchain
+APP_CFLAGS="-Ofast"
+
 BOARD_VENDOR := htc
 
 DEVICE_PATH := device/htc/pme
@@ -63,9 +69,6 @@ TARGET_KERNEL_SOURCE := kernel/htc/msm8996
 TARGET_KERNEL_CONFIG := cyanogenmod_pme_defconfig
 TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
 TARGET_USES_UNCOMPRESSED_KERNEL := false
-
-# QCOM hardware
-BOARD_USES_QCOM_HARDWARE := true
 
 # ANT+
 BOARD_ANT_WIRELESS_DEVICE := "qualcomm-uart"
@@ -129,7 +132,7 @@ BOARD_BLUEDROID_VENDOR_CONF := $(DEVICE_PATH)/bluetooth/libbt_vndcfg.txt
 # Camera
 TARGET_SPECIFIC_CAMERA_PARAMETER_LIBRARY := libcamera_parameters_ext
 USE_DEVICE_SPECIFIC_CAMERA := true
-#COMMON_GLOBAL_CFLAGS += -DPROPERTY_PERMS_APPEND='{"htc.camera.sensor.", AID_CAMERA, 0}, {"camera.4k2k.", #AID_MEDIA, 0},'
+LOCAL_CFLAGS += -DPROPERTY_PERMS_APPEND='{"htc.camera.sensor.", AID_CAMERA, 0}, {"camera.4k2k.", #AID_MEDIA, 0},'
 
 # CMHW
 BOARD_USES_CYANOGEN_HARDWARE := true
@@ -143,6 +146,7 @@ TARGET_LDPRELOAD := libNimsWrap.so
 BOARD_USES_QCNE := true
 
 # Display
+BOARD_USES_ADRENO := true
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
 TARGET_USES_C2D_COMPOSITION := true
