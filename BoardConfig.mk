@@ -14,12 +14,17 @@
 # limitations under the License.
 #
 
+ifneq ($HOST_OS) ,darwin)
 
 # Use Snapdragon LLVM, if available
 TARGET_USE_SDCLANG := true
 
 # Add sdclang path
-TARGET_SDCLANG_PATH := prebuilts/clang/linux-x86/host/sdclang-3.8/bin
+SDCLANG_PATH := prebuilts/clang/linux-x86/host/sdclang-3.8/bin
+
+SDCLANG_LTO_DEFS := device/qcom/common/sdllvm-lto-defs.mk
+
+endif
 
 # add APP_CFLGS for snapdragon llvm toolchain
 APP_CFLAGS="-Ofast"
@@ -132,7 +137,7 @@ BOARD_BLUEDROID_VENDOR_CONF := $(DEVICE_PATH)/bluetooth/libbt_vndcfg.txt
 # Camera
 TARGET_SPECIFIC_CAMERA_PARAMETER_LIBRARY := libcamera_parameters_ext
 USE_DEVICE_SPECIFIC_CAMERA := true
-LOCAL_CFLAGS += -DPROPERTY_PERMS_APPEND='{"htc.camera.sensor.", AID_CAMERA, 0}, {"camera.4k2k.", #AID_MEDIA, 0},'
+TARGET_GLOBAL_CFLAGS += -DPROPERTY_PERMS_APPEND='{"htc.camera.sensor.", AID_CAMERA, 0}, {"camera.4k2k.", #AID_MEDIA, 0},'
 
 # CMHW
 BOARD_USES_CYANOGEN_HARDWARE := true
@@ -173,6 +178,9 @@ endif
 TARGET_HW_DISK_ENCRYPTION := true
 
 # GPS test................
+BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := msm8996
+BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := true
+
 TARGET_NO_RPC := true
 USE_DEVICE_SPECIFIC_GPS := true
 
