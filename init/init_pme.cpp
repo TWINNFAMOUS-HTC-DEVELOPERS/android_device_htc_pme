@@ -80,7 +80,7 @@ void vendor_load_properties()
         property_set("ro.build.description", "1.30.401.1 8.0_g CL738269 release-keys");
         property_set("ro.product.device", "htc_pmeuhl");
         property_set("ro.build.product", "htc_pmeuhl");
-        if (bootcid =="HTC__001") {
+        if (bootcid == "HTC__001") {
             gsm_properties("9");
             property_set("ro.product.model", "HTC 10");
             property_set("ro.phone.min_match", "8");
