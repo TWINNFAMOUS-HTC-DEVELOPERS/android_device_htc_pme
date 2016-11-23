@@ -73,7 +73,7 @@ void vendor_load_properties()
     bootmid = property_get("ro.boot.mid");
     bootcid = property_get("ro.boot.cid");
 
-    if (bootmid == "2PS620000")) {
+    if (bootmid == "2PS620000") {
         /* Common props for HTC 10 (International) */
         gsm_properties("9");
         property_set("ro.build.fingerprint", "htc/pmeuhl_00401/htc_pmeuhl:6.0.1/MMB29M/738269.1:user/release-keys");
