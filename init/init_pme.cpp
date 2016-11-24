@@ -509,5 +509,5 @@ void vendor_load_properties()
 
     device = property_get("ro.product.device");
     INFO("
-}  ERROR("Found bootmid %s setting build properties for %s device\n", bootmid.c_str(), device.c_str());
+}  ERROR("Found bootmid %s setting build properties for %s device\n", bootcid.c_str(), bootmid.c_str(), device.c_str());
   }
