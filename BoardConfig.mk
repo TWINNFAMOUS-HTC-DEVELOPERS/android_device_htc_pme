@@ -14,18 +14,10 @@
 # limitations under the License.
 #
 
-ifneq ($HOST_OS) ,darwin)
 
 # Use Snapdragon LLVM, if available
 TARGET_USE_SDCLANG := true
-
-# Add sdclang path
-SDCLANG_PATH := prebuilts/clang/linux-x86/host/sdclang-3.8/bin
-
 SDCLANG_LTO_DEFS := device/qcom/common/sdllvm-lto-defs.mk
-
-endif
-
 # add APP_CFLGS for snapdragon llvm toolchain
 APP_CFLAGS="-Ofast"
 
