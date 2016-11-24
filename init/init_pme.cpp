@@ -555,9 +555,7 @@ void vendor_load_properties()
             property_set("ro.ril.enable.a53", "1");
             property_set("ro.ril.oem.ecclist", "911");
         }
-    }
-
-    device = property_get("ro.product.device");
-    INFO("
-}  ERROR("Found bootmid %s setting build properties for %s device\n", bootcid.c_str(), bootmid.c_str(), device.c_str());
+    
+     device = property_get("ro.product.device");
+     ERROR("Found bootmid %s setting build properties for %s device\n", bootcid.c_str(), bootmid.c_str(), device.c_str());
   }
