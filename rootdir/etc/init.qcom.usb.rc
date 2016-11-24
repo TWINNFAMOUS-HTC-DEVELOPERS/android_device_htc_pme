@@ -12,20 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+on fs
+	mkdir /dev/usb-ffs 0770 shell shell
+	mkdir /dev/usb-ffs/adb 0770 shell shell
+	mount functionfs adb /dev/usb-ffs/adb uid=2000,gid=2000
+	write /sys/class/android_usb/android0/f_ffs/aliases adb
+
 on init
     write /sys/class/android_usb/android0/f_rndis/wceis 1
-
-on post-fs
-    mkdir /dev/usb-ffs 0770 shell shell
-    mkdir /dev/usb-ffs/adb 0770 shell shell
-    mount functionfs adb /dev/usb-ffs/adb uid=2000,gid=2000
-    write /sys/class/android_usb/android0/f_ffs/aliases adb
-
-on boot
     write /sys/class/android_usb/android0/iSerial ${ro.serialno}
 
 on charger
     setprop sys.usb.config mass_storage
+
+service qcom-usb-sh /system/bin/sh /init.qcom.usb.sh
+    class core
+    user root
+    oneshot
 
 # MTP
 on property:sys.usb.config=mtp
@@ -84,11 +87,11 @@ on property:sys.usb.config=ptp,adb
     start adbd
     setprop sys.usb.state ${sys.usb.config}
 
-# Mass storage
+# MASS STORAGE
 on property:sys.usb.config=mass_storage
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 0bb4
-    write /sys/class/android_usb/android0/idProduct 0c01
+    write /sys/class/android_usb/android0/idProduct 0ff9
     write /sys/class/android_usb/android0/functions mass_storage
     write /sys/class/android_usb/android0/enable 1
     setprop sys.usb.state ${sys.usb.config}

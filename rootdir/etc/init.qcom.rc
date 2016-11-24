@@ -382,6 +382,19 @@ service fingerprintd /system/bin/fingerprintd
     user system
     group system input
 
+service hciattach /system/bin/sh /system/etc/init.qcom.bt.sh
+    class late_start
+    user bluetooth
+    group bluetooth net_bt_admin
+    disabled
+    oneshot
+
+on property:bluetooth.hciattach=true
+    start hciattach
+
+on property:bluetooth.hciattach=false
+    setprop bluetooth.status off
+
 service ims_rtp_daemon /system/bin/ims_rtp_daemon
    class main
    user system

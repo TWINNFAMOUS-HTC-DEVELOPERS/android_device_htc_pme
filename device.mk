@@ -129,6 +129,8 @@ PRODUCT_PACKAGES += \
     init.recovery.qcom.rc \
     ueventd.qcom.rc \
     init.qcom.sh \
+    init.qcom.bt.sh \
+    init.qcom.usb.sh \
     init.qcom.firmware_links.sh
 
 # Input
